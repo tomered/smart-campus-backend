@@ -1,9 +1,18 @@
-import {Entity, PrimaryColumn, Column, BaseEntity} from 'typeorm';
+import {Entity, PrimaryColumn, Column, BaseEntity, ManyToOne, JoinColumn} from 'typeorm';
+import { Role } from './role';
+
+// User table 
 
 @Entity('user')
 export class User extends BaseEntity {
     @PrimaryColumn()
-    id! : number;
+    userId! : number;
+
+    @Column({
+        generated:'increment',
+        type: 'int'
+    })
+    id!: string;
 
     @Column()
     firstName!: string;
@@ -11,13 +20,19 @@ export class User extends BaseEntity {
     @Column()
     lastName!: string;
 
-    @Column()
+    @Column({
+        unique: true
+    })
     email!:string;
 
     @Column()
     userName!: string;
 
-    @Column({})
+    @Column()
     phone!: number;
+
+    @ManyToOne(() => Role)
+    @JoinColumn({name:'roleId'})
+    role!:Role
 
 }

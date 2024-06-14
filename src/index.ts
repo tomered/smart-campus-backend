@@ -3,8 +3,11 @@ import dotenv from "dotenv";
 import { pagination } from "typeorm-pagination";
 import { Client } from "pg";
 
-import { User } from "./services/entities/User";
+
 import { DataSource } from "typeorm"
+import { User } from "./services/entities/user";
+import { Role } from "./services/entities/role";
+import { defaultRoles } from "./utils/utilities";
 
 dotenv.config();
 
@@ -19,33 +22,34 @@ const dataSource = new DataSource({
   port: Number(process.env.DB_PORT),
   database: 'SmartApp',
   schema: 'local',
-  entities: [User],
+  entities: [User, Role],
   synchronize: true,
 });
 
 
+
+
 const main = async () => {
-  try{
-  const connection = await dataSource.initialize();
-  console.log('Connected to Postgres');
-  // const userRepository = connection.getRepository('users');
-  // const user = new Users();
-  // user.firstName = "gal";
-  // user.lastName = "kalev";
-  // user.email = "g@g.com";
-  // user.id = 1234;
-  // user.phone = 1234567890;
-  // user.userName = "galkal";
+  try {
+    await dataSource.initialize();
+    const roleRepository = dataSource.getRepository(Role);
 
-  // await userRepository.save(user);
 
-  // const allUsers = await userRepository.find();
-
-  // console.log(allUsers);
-  }catch(err){
-    console.log('Unable to connect to Postgres ' + err);
-  }
+    // Checking if the default roles exist in the Role table
+    for (const role of defaultRoles) {
+      const existingRole = await roleRepository.findOneBy({ roleId: role.roleId });
+      if (!existingRole) {
+        await roleRepository.save(role);
+      }
+    }
   
+
+    console.log('Connected to Postgres');
+    
+  } catch (err) {
+    console.error(err);
+  }
+
 }
 
 

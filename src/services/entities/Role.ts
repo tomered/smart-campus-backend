@@ -1,11 +1,16 @@
 import {Entity, PrimaryColumn, Column, BaseEntity} from 'typeorm';
 
+// Role table
+
 @Entity('role')
 export class Role extends BaseEntity {
     @PrimaryColumn()
-    id! : number;
+    roleId! : number;
 
     @Column()
-    role! : string;
+    roleDescription! : string;
 
+
+
+    
 }
