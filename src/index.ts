@@ -2,6 +2,8 @@ import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import { pagination } from "typeorm-pagination";
 import { Client } from "pg";
+import { authenticateUser } from "./middleware/authenticateUser";
+import loginRouter from "./routes/login";
 import { DataSource } from "typeorm"
 import { User } from "./entities/user";
 import { Role } from "./entities/role";
@@ -10,6 +12,11 @@ import { defaultRoles } from "./utils/utilities";
 dotenv.config();
 
 const app: Express = express();
+app.use(express.json());
+
+app.use("/login", loginRouter);
+app.use("/api", authenticateUser);
+
 const port = process.env.PORT || 3000;
 
 
