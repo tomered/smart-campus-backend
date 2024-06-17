@@ -4,6 +4,10 @@ import { pagination } from "typeorm-pagination";
 import { Client } from "pg";
 import { authenticateUser } from "./middleware/authenticateUser";
 import loginRouter from "./routes/login";
+import { DataSource } from "typeorm"
+import { User } from "./entities/user";
+import { Role } from "./entities/role";
+import { defaultRoles } from "./utils/utilities";
 
 dotenv.config();
 
@@ -14,30 +18,46 @@ app.use("/login", loginRouter);
 app.use("/api", authenticateUser);
 
 const port = process.env.PORT || 3000;
-const client = new Client({
-  user: process.env.DB_USERNAME,
+
+
+// Connect to the database in PostgreSQL
+const dataSource = new DataSource({
+  type: 'postgres',
+  username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   host: process.env.DB_HOST,
   port: Number(process.env.DB_PORT),
-  database: process.env.DB,
+  database: 'SmartApp',
+  schema: 'local',
+  entities: [User, Role],
+  synchronize: true,
 });
 
-client
-  .connect()
-  .then(() => {
-    console.log("Connected to PostgreSQL database");
-  })
-  .catch((err) => {
-    console.error("Error connecting to PostgreSQL database", err);
-  });
 
-client.query("SELECT * FROM users", (err, result) => {
-  if (err) {
-    console.error("Error executing query", err);
-  } else {
-    console.log("Query result:", result.rows);
+// Function to initialize connection to DB and checks Role table
+const main = async () => {
+  try {
+    await dataSource.initialize();
+    const roleRepository = dataSource.getRepository(Role);
+
+
+    // Checking if the default roles exist in the Role table
+    for (const role of defaultRoles) {
+      const existingRole = await roleRepository.findOneBy({ roleId: role.roleId });
+      if (!existingRole) {
+        await roleRepository.save(role);
+      }
+    }
+  
+    console.log('Connected to Postgres');
+    
+  } catch (err) {
+    console.error(err);
   }
-});
+
+}
+
+main()
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
