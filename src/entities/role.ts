@@ -9,8 +9,4 @@ export class Role extends BaseEntity {
 
     @Column()
     roleDescription! : string;
-
-
-
-    
 }

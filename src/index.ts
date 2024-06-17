@@ -2,11 +2,9 @@ import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import { pagination } from "typeorm-pagination";
 import { Client } from "pg";
-
-
 import { DataSource } from "typeorm"
-import { User } from "./services/entities/user";
-import { Role } from "./services/entities/role";
+import { User } from "./entities/user";
+import { Role } from "./entities/role";
 import { defaultRoles } from "./utils/utilities";
 
 dotenv.config();
@@ -14,6 +12,8 @@ dotenv.config();
 const app: Express = express();
 const port = process.env.PORT || 3000;
 
+
+// Connect to the database in PostgreSQL
 const dataSource = new DataSource({
   type: 'postgres',
   username: process.env.DB_USERNAME,
@@ -27,8 +27,7 @@ const dataSource = new DataSource({
 });
 
 
-
-
+// Function to initialize connection to DB and checks Role table
 const main = async () => {
   try {
     await dataSource.initialize();
@@ -43,7 +42,6 @@ const main = async () => {
       }
     }
   
-
     console.log('Connected to Postgres');
     
   } catch (err) {
@@ -52,36 +50,7 @@ const main = async () => {
 
 }
 
-
 main()
-
-
-// const client = new Client({
-//   user: process.env.DB_USERNAME,
-//   password: process.env.DB_PASSWORD,
-//   host: process.env.DB_HOST,
-//   port: Number(process.env.DB_PORT),
-//   database: process.env.DB,
-// });
-
-
-
-// client
-//   .connect()
-//   .then(() => {
-//     console.log("Connected to PostgreSQL database");
-//   })
-//   .catch((err) => {
-//     console.error("Error connecting to PostgreSQL database", err);
-//   });
-
-// client.query("SELECT * FROM users", (err, result) => {
-//   if (err) {
-//     console.error("Error executing query", err);
-//   } else {
-//     console.log("Query result:", result.rows);
-//   }
-// });
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
