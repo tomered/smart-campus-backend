@@ -13,6 +13,11 @@ const users: User[] = [
   },
 ];
 
+/**
+ * Checks if the given username exists in DB
+ * @param username
+ * @returns user
+ */
 export const findUserByUsername = async (
   username: string
 ): Promise<User | undefined> => {

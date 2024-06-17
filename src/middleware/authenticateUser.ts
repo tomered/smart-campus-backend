@@ -3,6 +3,10 @@ import { verifyJwt } from "../utils/jwt";
 import { findUserByUsername } from "../models/user";
 import { JwtPayload } from "jsonwebtoken";
 
+/**
+ * This function checks if the provided token is valid
+ *  
+ */
 export const authenticateUser = async (
   req: Request,
   res: Response,
