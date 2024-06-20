@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import bcrypt from "bcrypt";
-import { findUserByUsername } from "../models/user";
+import { findUserByUsername } from "../models/mockDb";
 import { signJwt } from "../utils/jwt";
 
 const router = express.Router();
@@ -8,10 +8,12 @@ const router = express.Router();
 router.post("/", async (req: Request, res: Response) => {
   const { username, password } = req.body;
 
+
   const user = await findUserByUsername(username);
   if (!user) {
     return res.status(404).send("User not found.");
   }
+
   // TODO: rewrite when registration is ready
   const validPassword = await bcrypt.compare(password, user.passwordHash);
   if (!validPassword) {
