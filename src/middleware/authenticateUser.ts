@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { verifyJwt } from "../utils/jwt";
-import { findUserByUsername } from "../models/mockDb";
+import { findUserByUsername } from "../models/user";
 import { JwtPayload } from "jsonwebtoken";
 
 /**

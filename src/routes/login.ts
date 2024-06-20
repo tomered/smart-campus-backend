@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import bcrypt from "bcrypt";
-import { findUserByUsername } from "../models/mockDb";
+import { findUserByUsername } from "../models/user";
 import { signJwt } from "../utils/jwt";
 
 const router = express.Router();
