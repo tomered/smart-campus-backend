@@ -1,11 +1,9 @@
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
-
-dotenv.config();
+require("dotenv").config();
 
 const secret = process.env.JWT_SECRET;
 if (!secret) {
-  throw new Error("JWT_SECRET is undefined");
+  throw new Error("secret is undefined");
 }
 
 export const signJwt = (payload: object, expiresIn: string | number = "1h") => {

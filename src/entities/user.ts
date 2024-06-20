@@ -12,7 +12,7 @@ export class User extends BaseEntity {
         generated:'increment',
         type: 'int'
     })
-    id!: number;
+    id!: string;
 
     @Column()
     firstName!: string;
@@ -28,14 +28,11 @@ export class User extends BaseEntity {
     @Column({
         unique: true
     })
-    username!: string;
+    userName!: string;
 
     @Column()
-    phone!: string;
-    
-    @Column()
-    passwordHash!: string;
-    
+    phone!: number;
+
     @ManyToOne(() => Role)
     @JoinColumn({name:'roleId'})
     role!:Role
