@@ -58,7 +58,7 @@ main();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(pagination);
-
+ 
 app.get("/smart", (_, res: Response) => {
   res.status(200).json({
     success: true,
