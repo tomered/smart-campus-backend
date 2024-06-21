@@ -1,24 +1,28 @@
 import express, { Request, Response } from "express";
 import bcrypt from "bcrypt";
-import { findUserByUsername } from "../models/user";
+
 import { signJwt } from "../utils/jwt";
+import { findUserByUsername } from "../services/db";
 
 const router = express.Router();
 
 router.post("/", async (req: Request, res: Response) => {
-  const { username, password } = req.body;
+  const { userName, password } = req.body;
 
-  const user = await findUserByUsername(username);
+  const user = await findUserByUsername(userName);
+
   if (!user) {
-    return res.status(404).send("User not found.");
-  }
-  // TODO: rewrite when registration is ready
-  const validPassword = await bcrypt.compare(password, user.passwordHash);
-  if (!validPassword) {
-    return res.status(401).send("Invalid password.");
+    console.log("Invalid username");
+    return res.status(404).send("Invalid username or password.");
   }
 
-  const token = signJwt({ username: user.username }, "1h");
+  const validPassword = await bcrypt.compare(password, user.password);
+  if (!validPassword) {
+    console.log("invalid password");
+    return res.status(401).send("Invalid username or password.");
+  }
+
+  const token = signJwt({ username: user.userName }, "1h");
   res.send({ token });
 });
 

@@ -1,40 +1,48 @@
-import {Entity, PrimaryColumn, Column, BaseEntity, ManyToOne, JoinColumn} from 'typeorm';
-import { Role } from './role';
+import {
+  Entity,
+  PrimaryColumn,
+  Column,
+  BaseEntity,
+  ManyToOne,
+  JoinColumn,
+  Generated,
+} from "typeorm";
+import { Role } from "./role";
 
-// User table 
+// User table
 
-@Entity('user')
+@Entity("user")
 export class User extends BaseEntity {
-    @PrimaryColumn()
-    userId! : number;
+  @Column()
+  @Generated("increment")
+  id!: number;
 
-    @Column({
-        generated:'increment',
-        type: 'int'
-    })
-    id!: string;
+  @PrimaryColumn()
+  userId!: string;
 
-    @Column()
-    firstName!: string;
+  @Column()
+  firstName!: string;
 
-    @Column()
-    lastName!: string;
+  @Column()
+  lastName!: string;
 
-    @Column({
-        unique: true
-    })
-    email!:string;
+  @Column({
+    unique: true,
+  })
+  email!: string;
 
-    @Column({
-        unique: true
-    })
-    userName!: string;
+  @Column({
+    unique: true,
+  })
+  userName!: string;
 
-    @Column()
-    phone!: number;
+  @Column()
+  phone!: string;
 
-    @ManyToOne(() => Role)
-    @JoinColumn({name:'roleId'})
-    role!:Role
+  @Column()
+  password!: string;
 
+  @ManyToOne(() => Role)
+  @JoinColumn({ name: "roleId" })
+  role!: Role;
 }

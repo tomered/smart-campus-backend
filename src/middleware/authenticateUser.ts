@@ -1,11 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import { verifyJwt } from "../utils/jwt";
-import { findUserByUsername } from "../models/user";
+
 import { JwtPayload } from "jsonwebtoken";
+import { findUserByUsername } from "../services/db";
 
 /**
  * This function checks if the provided token is valid
- *  
+ *
  */
 export const authenticateUser = async (
   req: Request,

@@ -3,10 +3,10 @@ import dotenv from "dotenv";
 import { pagination } from "typeorm-pagination";
 import { authenticateUser } from "./middleware/authenticateUser";
 import loginRouter from "./routes/login";
-import { DataSource } from "typeorm";
-import { User } from "./entities/user";
+import registerRouter from "./routes/register";
 import { Role } from "./entities/role";
-import { defaultRoles } from "./utils/utilities";
+import { dataSource } from "./services/db";
+import { defaultRoles } from "./constants";
 
 dotenv.config();
 
@@ -14,22 +14,10 @@ const app: Express = express();
 app.use(express.json());
 
 app.use("/login", loginRouter);
+app.use("/register", registerRouter);
 app.use("/api", authenticateUser);
 
 const port = process.env.PORT || 3000;
-
-// Connect to the database in PostgreSQL
-const dataSource = new DataSource({
-  type: "postgres",
-  username: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  host: process.env.DB_HOST,
-  port: Number(process.env.DB_PORT),
-  database: process.env.DB,
-  schema: process.env.SCHEMA,
-  entities: [User, Role],
-  synchronize: true,
-});
 
 // Function to initialize connection to DB and checks Role table
 const main = async () => {
