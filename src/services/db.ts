@@ -31,7 +31,6 @@ export async function findUserByUsername(
       .getOne();
     return user || null;
   } catch (error) {
-    console.error("Error finding user by username:", error);
-    throw new Error("Error finding user by username");
+    throw new Error("Error finding user by username " + error);
   }
 }
