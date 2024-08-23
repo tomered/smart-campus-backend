@@ -16,6 +16,9 @@ COPY . .
 # Build the TypeScript code
 RUN npm run build
 
+# Install only production dependencies
+RUN npm ci --only=production
+
 # Expose the port the app runs on
 EXPOSE 3000
 
