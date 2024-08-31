@@ -17,7 +17,7 @@ app.use("/login", loginRouter);
 app.use("/register", registerRouter);
 app.use("/api", authenticateUser);
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 10000;
 
 // Function to initialize connection to DB and checks Role table
 const main = async () => {
