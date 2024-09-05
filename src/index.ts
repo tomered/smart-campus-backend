@@ -1,36 +1,56 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express, Response } from "express";
 import dotenv from "dotenv";
 import { pagination } from "typeorm-pagination";
-import { Client } from "pg";
+import { authenticateUser } from "./middleware/authenticateUser";
+import loginRouter from "./routes/login";
+import registerRouter from "./routes/register";
+import { Role } from "./entities/role";
+import { dataSource } from "./services/db";
+import { defaultRoles } from "./constants";
 
 dotenv.config();
 
 const app: Express = express();
-const port = process.env.PORT || 3000;
-const client = new Client({
-  user: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  host: process.env.DB_HOST,
-  port: Number(process.env.DB_PORT),
-  database: process.env.DB,
-});
+app.use(express.json());
 
-client
-  .connect()
-  .then(() => {
-    console.log("Connected to PostgreSQL database");
-  })
-  .catch((err) => {
-    console.error("Error connecting to PostgreSQL database", err);
-  });
+app.use("/login", loginRouter);
+app.use("/register", registerRouter);
+app.use("/api", authenticateUser);
 
-client.query("SELECT * FROM users", (err, result) => {
-  if (err) {
-    console.error("Error executing query", err);
-  } else {
-    console.log("Query result:", result.rows);
+const port = process.env.PORT || 10000;
+
+// Function to initialize connection to DB and checks Role table
+const main = async () => {
+  try {
+    await dataSource.initialize();
+    const roleRepository = dataSource.getRepository(Role);
+
+    // Checking if the default roles exist in the Role table
+    for (const role of defaultRoles) {
+      const existingRole = await roleRepository.findOneBy({
+        roleId: role.roleId,
+      });
+      if (!existingRole) {
+        await roleRepository.save(role);
+      }
+    }
+
+    console.log("Connected to Postgres");
+  } catch (err) {
+    if (err instanceof Error) {
+      if ((err as any).code === "ECONNRESET") {
+        console.error("Connection reset by peer. Retrying...");
+        // You might want to implement retry logic here
+      } else {
+        console.error("Database connection error:", err.message);
+      }
+    } else {
+      console.error("An unexpected error occurred:", err);
+    }
   }
-});
+};
+
+main();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
