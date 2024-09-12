@@ -2,6 +2,7 @@ import express, { Express, Response } from "express";
 import dotenv from "dotenv";
 import { pagination } from "typeorm-pagination";
 import { authenticateUser } from "./middleware/authenticateUser";
+import { validateAdmin } from "./middleware/validateAdmin";
 import loginRouter from "./routes/login";
 import registerRouter from "./routes/register";
 import { Role } from "./entities/role";
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use("/login", loginRouter);
 app.use("/register", registerRouter);
 app.use("/api", authenticateUser);
+app.use("/api/validate-admin", validateAdmin);
 
 const port = process.env.PORT || 10000;
 
