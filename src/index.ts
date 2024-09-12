@@ -17,7 +17,7 @@ app.use(express.json());
 app.use("/login", loginRouter);
 app.use("/register", registerRouter);
 app.use("/api", authenticateUser);
-app.use("/api/validate-admin", validateAdmin);
+app.use("/api/validate-admin", authenticateUser, validateAdmin);
 
 const port = process.env.PORT || 10000;
 

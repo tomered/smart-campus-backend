@@ -35,8 +35,11 @@ export const validateAdmin = async (
     }
 
     return res.status(200).json({
-      userName: user.userName,
-      role: user.role.roleId,
+      status: "success",
+      data: {
+        userName: user.userName,
+        role: user.role.roleId,
+      },
     });
   } catch (err) {
     console.error(err);
