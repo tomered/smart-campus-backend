@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import { pagination } from "typeorm-pagination";
 import { authenticateUser } from "./middleware/authenticateUser";
+import { validateAdmin } from "./middleware/validateAdmin";
 import loginRouter from "./routes/login";
 import registerRouter from "./routes/register";
 import { Role } from "./entities/role";
@@ -23,7 +24,7 @@ app.use(
 
 app.use("/login", loginRouter);
 app.use("/register", registerRouter);
-app.use("/api", authenticateUser);
+app.use("/api", authenticateUser, validateAdmin);
 
 const port = process.env.PORT || 10000;
 
