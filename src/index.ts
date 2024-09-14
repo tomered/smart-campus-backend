@@ -48,7 +48,6 @@ const main = async () => {
     if (err instanceof Error) {
       if ((err as any).code === "ECONNRESET") {
         console.error("Connection reset by peer. Retrying...");
-        // You might want to implement retry logic here
       } else {
         console.error("Database connection error:", err.message);
       }
@@ -67,7 +66,7 @@ app.use(pagination);
 app.get("/smart", (_, res: Response) => {
   res.status(200).json({
     success: true,
-    message: "You are on node-typescript-boilerplate.",
+    message: "You are connected to Smart Campus web server.",
   });
 });
 
