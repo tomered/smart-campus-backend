@@ -5,6 +5,7 @@ import { authenticateUser } from "./middleware/authenticateUser";
 import { validateAdmin } from "./middleware/validateAdmin";
 import loginRouter from "./routes/login";
 import registerRouter from "./routes/register";
+import adminEndpoint from "./routes/adminEndpoint";
 import { Role } from "./entities/role";
 import { dataSource } from "./services/db";
 import { defaultRoles } from "./constants";
@@ -16,8 +17,7 @@ app.use(express.json());
 
 app.use("/login", loginRouter);
 app.use("/register", registerRouter);
-app.use("/api", authenticateUser);
-app.use("/api/validate-admin", authenticateUser, validateAdmin);
+app.use("/api", authenticateUser, validateAdmin, adminEndpoint);
 
 const port = process.env.PORT || 10000;
 
