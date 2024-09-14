@@ -3,6 +3,25 @@ import { verifyJwt } from "../utils/jwt";
 import { JwtPayload } from "jsonwebtoken";
 import { User } from "../entities/user";
 
+/** -----------DOCUMENTATION-----------
+  Middleware to validate if the user is an admin.
+  This middleware extracts the JWT token from the Authorization header,
+  verifies its validity, and checks the user's role.
+  
+  If the token is missing or invalid, or the user is not found,
+  or the user is not an admin, it will return the appropriate error response.
+  Otherwise, it allows the request to proceed.
+ 
+  @param req - The incoming request object, containing the token in the Authorization header.
+  @param res - The response object used to send error messages in case of unauthorized access.
+  @param next - The next middleware function to be called if validation passes.
+  
+  @throws 401 - Access denied due to missing or invalid token.
+  @throws 404 - User not found.
+  @throws 403 - Access denied due to insufficient privileges (not an admin).
+  @throws 500 - Internal server error in case of exceptions.
+ */
+
 export const validateAdmin = async (
   req: Request,
   res: Response,
