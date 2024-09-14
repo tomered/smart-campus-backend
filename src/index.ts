@@ -1,5 +1,6 @@
 import express, { Express, Response } from "express";
 import dotenv from "dotenv";
+import cors from "cors";
 import { pagination } from "typeorm-pagination";
 import { authenticateUser } from "./middleware/authenticateUser";
 import loginRouter from "./routes/login";
@@ -12,6 +13,13 @@ dotenv.config();
 
 const app: Express = express();
 app.use(express.json());
+
+// Enable CORS for all origins
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
 app.use("/login", loginRouter);
 app.use("/register", registerRouter);
