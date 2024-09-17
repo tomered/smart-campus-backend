@@ -5,7 +5,7 @@ import { User } from "../entities/user";
     GET / --> Default route that returns a success message with an admin role.
     GET /users --> Retrieve all users from the database along with their roles.
     PUT /edit/:id --> Edit a user's details (first name, last name, email, and role).
-    DELETE /users/:id --> Delete a user from the database.
+    DELETE /delete/:id --> Delete a user from the database.
  */
 
 const router = express.Router();
@@ -107,7 +107,7 @@ router.put("/edit/:id", async (req: Request, res: Response) => {
 });
 
 // Endpoint to delete a certain user
-router.delete("/users/:id", async (req: Request, res: Response) => {
+router.delete("/delete/:id", async (req: Request, res: Response) => {
     const { id } = req.params;
   
     try {
