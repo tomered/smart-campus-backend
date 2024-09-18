@@ -1,5 +1,6 @@
 import express, { Express, Response } from "express";
 import dotenv from "dotenv";
+import cors from "cors";
 import { pagination } from "typeorm-pagination";
 import { authenticateUser } from "./middleware/authenticateUser";
 import { validateAdmin } from "./middleware/validateAdmin";
@@ -15,9 +16,17 @@ dotenv.config();
 const app: Express = express();
 app.use(express.json());
 
+// Enable CORS for all origins
+app.use(
+  cors({
+    origin: "*",
+  })
+);
+
 app.use("/login", loginRouter);
 app.use("/register", registerRouter);
 app.use("/api", authenticateUser, validateAdmin, adminRouter);
+
 
 const port = process.env.PORT || 10000;
 
@@ -42,7 +51,6 @@ const main = async () => {
     if (err instanceof Error) {
       if ((err as any).code === "ECONNRESET") {
         console.error("Connection reset by peer. Retrying...");
-        // You might want to implement retry logic here
       } else {
         console.error("Database connection error:", err.message);
       }
@@ -61,7 +69,7 @@ app.use(pagination);
 app.get("/smart", (_, res: Response) => {
   res.status(200).json({
     success: true,
-    message: "You are on node-typescript-boilerplate.",
+    message: "You are connected to Smart Campus web server.",
   });
 });
 
