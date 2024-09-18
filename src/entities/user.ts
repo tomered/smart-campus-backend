@@ -45,4 +45,10 @@ export class User extends BaseEntity {
   @ManyToOne(() => Role)
   @JoinColumn({ name: "roleId" })
   role!: Role;
+
+  @Column({ default: false })
+  isEmailVerified!: boolean;
+
+  @Column({ nullable: true, type: "varchar" })
+  emailVerificationToken!: string | null;
 }

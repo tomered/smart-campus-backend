@@ -25,6 +25,8 @@ router.post("/", async (req: Request, res: Response) => {
       userId,
       email,
       password,
+      isEmailVerified: false,
+      emailVerificationToken: "",
     });
 
     if (!validationResult.valid) {
@@ -47,11 +49,6 @@ router.post("/", async (req: Request, res: Response) => {
     const token = crypto.randomBytes(32).toString("hex");
     const hashedToken = await bcrypt.hash(token, salt);
 
-    // Set token expiration time to 24 hours from now
-    const tokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000);
-
-    // Create a random sequence of characters for the email verification token
-
     const user: IUser = {
       userName,
       firstName,
@@ -61,6 +58,8 @@ router.post("/", async (req: Request, res: Response) => {
       email,
       password: hashedPassword,
       role: studentRole,
+      isEmailVerified: false, // Set to false initially
+      emailVerificationToken: hashedToken, // Store the hashed token
     };
 
     // Add user to DB
@@ -73,22 +72,22 @@ router.post("/", async (req: Request, res: Response) => {
 
     // Send email verification
     const transporter = nodemailer.createTransport({
-      host: "smtp.ethereal.email",
-      port: 587,
-      secure: false, // true for port 465, false for other ports
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true, // true for port 465, false for other ports
       auth: {
-        user: "maddison53@ethereal.email",
-        pass: "jn7jnAPss4f63QBp6D",
+        user: "smartcampushit@gmail.com",
+        pass: "lrbf rnso bxzk vnff",
       },
     });
 
-    const verificationUrl = `https://your-domain.com/verify-email?token=${token}&email=${email}`;
+    const verificationUrl = `https://your-domain.com/verify-email?token=${hashedToken}&email=${email}`;
 
     const mailOptions = {
       from: "smartcampushit@gmail.com",
       to: user.email,
-      subject: "Email Verification",
-      text: `Please verify your email by clicking the following link: ${verificationUrl}. This link will expire in 24 hours.`,
+      subject: "Smart Campus Email Verification",
+      text: `Please verify your email by clicking the following link: ${verificationUrl}.\n This link will expire in 24 hours.`,
     };
 
     await transporter.sendMail(mailOptions);
