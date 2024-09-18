@@ -81,13 +81,11 @@ router.post("/", async (req: Request, res: Response) => {
       },
     });
 
-    const verificationUrl = `https://your-domain.com/verify-email?token=${hashedToken}&email=${email}`;
-
     const mailOptions = {
       from: "smartcampushit@gmail.com",
       to: user.email,
       subject: "Smart Campus Email Verification",
-      text: `Please verify your email by clicking the following link: ${verificationUrl}.\n This link will expire in 24 hours.`,
+      text: `Please verify your email by copying and pasting the following token into the verification page:\n\nToken: ${token}`,
     };
 
     await transporter.sendMail(mailOptions);
