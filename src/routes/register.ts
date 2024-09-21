@@ -10,7 +10,33 @@ import crypto from "crypto";
 
 const router = express.Router();
 
-// User registration
+/** -----------DOCUMENTATION-----------
+  User Registration Route
+
+  This route handles the user registration process, including validating the user's input,
+  hashing the password, generating an email verification token, storing the user in the 
+  database, and sending a verification email.
+
+  - It first validates the incoming request body using a predefined schema.
+  - If the validation passes, the password is hashed using bcrypt for security.
+  - A random token is generated for email verification and stored (hashed) in the database.
+  - The user data, along with the hashed password and token, is inserted into the database.
+  - Finally, an email containing the plain token is sent to the user for verification.
+
+  Key Points:
+  - Bcrypt is used to securely hash passwords and tokens.
+  - Nodemailer is used to send the email containing the verification token.
+  - If the user already exists, a proper error is returned.
+  
+  @param req - The incoming request object, containing user details such as 
+               userName, password, firstName, lastName, phone, userId, and email.
+  @param res - The response object used to send success or error messages back to the client.
+  
+  @throws 400 - Validation error for invalid input data.
+  @throws 404 - If the student role is not found in the database.
+  @throws 500 - Internal server error in case of exceptions during the process.
+ */
+
 router.post("/", async (req: Request, res: Response) => {
   try {
     const { userName, password, firstName, lastName, phone, userId, email } =
@@ -76,13 +102,13 @@ router.post("/", async (req: Request, res: Response) => {
       port: 465,
       secure: true, // true for port 465, false for other ports
       auth: {
-        user: "smartcampushit@gmail.com",
-        pass: "lrbf rnso bxzk vnff",
+        user: process.env.EMAIL_SECRET,
+        pass: process.env.EMAIL_SECRET_PASSWORD,
       },
     });
 
     const mailOptions = {
-      from: "smartcampushit@gmail.com",
+      from: process.env.EMAIL_SECRET,
       to: user.email,
       subject: "Smart Campus Email Verification",
       text: `Please verify your email by copying and pasting the following token into the verification page:\n\nToken: ${token}`,

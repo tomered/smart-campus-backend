@@ -6,6 +6,7 @@ import { authenticateUser } from "./middleware/authenticateUser";
 import { validateAdmin } from "./middleware/validateAdmin";
 import loginRouter from "./routes/login";
 import registerRouter from "./routes/register";
+import adminRouter from "./routes/admin";
 import verifyEmailRouter from "./routes/verifyEmail";
 import { Role } from "./entities/role";
 import { dataSource } from "./services/db";
@@ -26,7 +27,7 @@ app.use(
 app.use("/login", loginRouter);
 app.use("/register", registerRouter);
 app.use("/verify-email", verifyEmailRouter);
-app.use("/api", authenticateUser, validateAdmin);
+app.use("/api", authenticateUser, validateAdmin, adminRouter);
 
 const port = process.env.PORT || 10000;
 
