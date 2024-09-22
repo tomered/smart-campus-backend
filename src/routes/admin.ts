@@ -31,7 +31,7 @@ router.get("/admin/users", async (req: Request, res: Response) => {
       id: user.id,
       name: `${user.firstName} ${user.lastName}`,
       email: user.email,
-      role: user.role,
+      role: user.role.roleDescription,
     }));
 
     return res.status(200).json(userResponse);
@@ -63,7 +63,7 @@ router.put("/admin/edit/:id", async (req: Request, res: Response) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    //if there are changes it will change it 
+    //if there are changes it will change it
     if (firstName) user.firstName = firstName;
     if (lastName) user.lastName = lastName;
     if (email) {
@@ -108,25 +108,25 @@ router.put("/admin/edit/:id", async (req: Request, res: Response) => {
 
 // Endpoint to delete a certain user
 router.delete("/admin/delete/:id", async (req: Request, res: Response) => {
-    const { id } = req.params;
-  
-    try {
-      const user = await User.findOneBy({ id: Number(id) });
-  
-      if (!user) {
-        return res.status(404).json({ message: "User not found" });
-      }
-  
-      //delete the user
-      await User.remove(user);
-  
-      return res.status(200).json({
-        message: "User deleted successfully",
-      });
-    } catch (error) {
-      console.error("Error deleting user:", error);
-      return res.status(500).json({ message: "Server error" });
+  const { id } = req.params;
+
+  try {
+    const user = await User.findOneBy({ id: Number(id) });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
-  });
+
+    //delete the user
+    await User.remove(user);
+
+    return res.status(200).json({
+      message: "User deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+});
 
 export default router;
