@@ -13,9 +13,8 @@ export const dataSource = new DataSource({
   schema: process.env.SCHEMA,
   entities: [User, Role],
   synchronize: true,
-  ssl: {
-    rejectUnauthorized: false, // Set to true if you have a valid SSL certificate
-  },
+  //changed this part to false to avoid SSL error
+  ssl: false,
 });
 
 /**
