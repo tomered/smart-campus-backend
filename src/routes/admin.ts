@@ -52,6 +52,7 @@ router.put("/admin/edit/:id", async (req: Request, res: Response) => {
     Admin: 0,
     Student: 1,
     Lecturer: 2,
+    Administration: 3,
   };
 
   try {
