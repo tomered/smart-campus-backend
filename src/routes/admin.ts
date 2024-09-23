@@ -29,7 +29,8 @@ router.get("/admin/users", async (req: Request, res: Response) => {
     //mapping the users separately
     const userResponse = users.map((user) => ({
       id: user.id,
-      name: `${user.firstName} ${user.lastName}`,
+      firstName: `${user.firstName}`,
+      lastName:  `${user.lastName}`,
       email: user.email,
       role: user.role.roleDescription,
     }));
