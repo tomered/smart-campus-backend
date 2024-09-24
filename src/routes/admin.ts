@@ -4,6 +4,7 @@ import { User } from "../entities/user";
 /** -----------DOCUMENTATION-----------
     GET /admin --> Default route that returns a success message with an admin role.
     GET /admin/users --> Retrieve all users from the database along with their roles.
+    GET /admin/users/count --> Retrieve the total number of users.
     PUT /admin/edit/:id --> Edit a user's details (first name, last name, email, and role).
     DELETE /admin/delete/:id --> Delete a user from the database.
  */
@@ -41,6 +42,19 @@ router.get("/admin/users", async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Server error" });
   }
 });
+
+// Endpoint to get the number of users
+router.get("/admin/users/count", async (req: Request, res: Response) => {
+  try {
+    const count = await User.count();
+
+    return res.status(200).json({ totalUsers: count });
+  } catch (error) {
+    console.error("Error fetching user count:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+});
+
 
 // Endpoint to edit a certain user
 router.put("/admin/edit/:id", async (req: Request, res: Response) => {
