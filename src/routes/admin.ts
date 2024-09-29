@@ -2,24 +2,24 @@ import express, { Request, Response } from "express";
 import { User } from "../entities/user";
 
 /** -----------DOCUMENTATION-----------
-    GET /admin --> Default route that returns a success message with an admin role.
-    GET /admin/users --> Retrieve all users from the database along with their roles.
-    GET /admin/users/count --> Retrieve the total number of users.
-    PUT /admin/edit/:id --> Edit a user's details (first name, last name, email, and role).
-    DELETE /admin/delete/:id --> Delete a user from the database.
+    GET / --> Default route that returns a success message with an admin role.
+    GET /users --> Retrieve all users from the database along with their roles.
+    GET /users/count --> Retrieve the total number of users.
+    PUT /edit/:id --> Edit a user's details (first name, last name, email, and role).
+    DELETE /delete/:id --> Delete a user from the database.
  */
 
 const router = express.Router();
 
 // Endpoint to show a success admin entry
-router.get("/admin", async (req: Request, res: Response) => {
+router.get("/", async (req: Request, res: Response) => {
   return res.status(200).json({
     status: "The user's role is admin (0), success",
   });
 });
 
 // Endpoint to get all users
-router.get("/admin/users", async (req: Request, res: Response) => {
+router.get("/users", async (req: Request, res: Response) => {
   try {
     //getting all the users with relation to their role
     const users = await User.find({
@@ -44,7 +44,7 @@ router.get("/admin/users", async (req: Request, res: Response) => {
 });
 
 // Endpoint to get the number of users
-router.get("/admin/users/count", async (req: Request, res: Response) => {
+router.get("/users/count", async (req: Request, res: Response) => {
   try {
     const count = await User.count();
 
@@ -57,7 +57,7 @@ router.get("/admin/users/count", async (req: Request, res: Response) => {
 
 
 // Endpoint to edit a certain user
-router.put("/admin/edit/:id", async (req: Request, res: Response) => {
+router.put("/edit/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
   const { firstName, lastName, email, role } = req.body;
 
@@ -123,7 +123,7 @@ router.put("/admin/edit/:id", async (req: Request, res: Response) => {
 });
 
 // Endpoint to delete a certain user
-router.delete("/admin/delete/:id", async (req: Request, res: Response) => {
+router.delete("/delete/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {

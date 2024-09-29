@@ -27,7 +27,8 @@ app.use(
 app.use("/login", loginRouter);
 app.use("/register", registerRouter);
 app.use("/verify-email", verifyEmailRouter);
-app.use("/api", authenticateUser, validateAdmin, adminRouter);
+app.use("/api", authenticateUser);
+app.use("/api/admin", validateAdmin, adminRouter);
 
 const port = process.env.PORT || 10000;
 
