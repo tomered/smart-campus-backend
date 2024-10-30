@@ -11,6 +11,7 @@ import verifyEmailRouter from "./routes/verifyEmail";
 import { Role } from "./entities/role";
 import { dataSource } from "./services/db";
 import { defaultRoles } from "./constants";
+import sensorsDataRouter from "./routes/sensors";
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ app.use("/register", registerRouter);
 app.use("/verify-email", verifyEmailRouter);
 app.use("/api", authenticateUser);
 app.use("/api/admin", validateAdmin, adminRouter);
+app.use("/sensorsData", sensorsDataRouter);
 
 const port = process.env.PORT || 10000;
 
