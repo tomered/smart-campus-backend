@@ -7,7 +7,7 @@ dotenv.config();
 export const sensorsDataSource = new DataSource({
   type: "postgres",
   host: process.env.SDB_HOST,
-  port: parseInt(process.env.SDB_PORT || "5432", 10),
+  port: Number(process.env.SDB_PORT),
   username: process.env.SDB_USERNAME,
   password: process.env.SDB_PASSWORD,
   database: process.env.SDB,
