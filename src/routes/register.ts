@@ -98,7 +98,7 @@ router.post("/", async (req: Request, res: Response) => {
 
     // Send email verification
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
+      host: process.env.SMPT_HOST,
       port: 465,
       secure: true, // true for port 465, false for other ports
       auth: {

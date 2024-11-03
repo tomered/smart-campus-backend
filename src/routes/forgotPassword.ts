@@ -55,7 +55,7 @@ router.post("/forgot-password", async (req: Request, res: Response) => {
 
     // Send the token to the user's email
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
+      host: process.env.SMPT_HOST,
       port: 465,
       secure: true, // true for port 465
       auth: {
