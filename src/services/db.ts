@@ -30,6 +30,7 @@ export async function findUserByUsername(
   try {
     const user = await userRepository
       .createQueryBuilder("user")
+      .leftJoinAndSelect("user.role", "role")
       .where("user.userName = :userName", { userName })
       .getOne();
     return user || null;

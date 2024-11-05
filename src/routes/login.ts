@@ -23,7 +23,7 @@ router.post("/", async (req: Request, res: Response) => {
   }
 
   const token = signJwt({ username: user.userName }, "1h");
-  res.send({ token });
+  res.send({ token, roleId: user.role.roleId });
 });
 
 export default router;
