@@ -60,6 +60,7 @@ router.get("/all-data", async (req: Request, res: Response) => {
     }, {});
 
     // Convert the accumulator object to an array
+    
     const organizedSensors = Object.values(sensorsWithLocationAndData);
 
     res.status(200).send(organizedSensors);
