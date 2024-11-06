@@ -61,8 +61,8 @@ router.get("/all-data", async (req: Request, res: Response) => {
 
     // Convert the accumulator object to an array
     const organizedSensors = Object.values(sensorsWithLocationAndData);
-    
-    res.json(organizedSensors);
+
+    res.status(200).send(organizedSensors);
   } catch (error) {
     console.error("Error fetching data:", error);
     res.status(500).send("Failed to get sensors data");
