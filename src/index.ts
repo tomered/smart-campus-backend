@@ -8,6 +8,7 @@ import loginRouter from "./routes/login";
 import registerRouter from "./routes/register";
 import adminRouter from "./routes/admin";
 import verifyEmailRouter from "./routes/verifyEmail";
+import managePasswordRouter from "./routes/forgotPassword";
 import { Role } from "./entities/role";
 import { dataSource } from "./services/db";
 import { defaultRoles } from "./constants";
@@ -28,6 +29,7 @@ app.use(
 app.use("/login", loginRouter);
 app.use("/register", registerRouter);
 app.use("/verify-email", verifyEmailRouter);
+app.use("/manage-password", managePasswordRouter);
 app.use("/api", authenticateUser,sensorsDataRouter);
 app.use("/api/admin", validateAdmin, adminRouter);
 

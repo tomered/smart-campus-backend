@@ -51,4 +51,7 @@ export class User extends BaseEntity {
 
   @Column({ nullable: true, type: "varchar" })
   emailVerificationToken!: string | null;
+
+  @Column({ nullable: true, type: "timestamp" })
+  passwordResetExpires?: Date | null; // Added field for token expiration
 }
