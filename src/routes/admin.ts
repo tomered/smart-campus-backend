@@ -23,13 +23,13 @@ router.get("/users", async (req: Request, res: Response) => {
   try {
     //getting all the users with relation to their role
     const users = await User.find({
-      select: ["id", "firstName", "lastName", "email"],
+      select: ["userId", "firstName", "lastName", "email"],
       relations: ["role"],
     });
 
     //mapping the users separately
     const userResponse = users.map((user) => ({
-      id: user.id,
+      id: user.userId,
       firstName: `${user.firstName}`,
       lastName:  `${user.lastName}`,
       email: user.email,
