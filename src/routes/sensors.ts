@@ -7,7 +7,7 @@ const router = Router();
  * Fetch sensor records from the database, including their location and associated data
  */
 
-router.get("/all-data", async (req: Request, res: Response) => {
+router.get("/sensorsData/all-data", async (req: Request, res: Response) => {
   try {
     const allSensors = await sensorsDataSource
       .createQueryBuilder()
