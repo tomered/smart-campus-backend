@@ -30,9 +30,8 @@ app.use("/login", loginRouter);
 app.use("/register", registerRouter);
 app.use("/verify-email", verifyEmailRouter);
 app.use("/manage-password", managePasswordRouter);
-app.use("/api", authenticateUser);
+app.use("/api", authenticateUser,sensorsDataRouter);
 app.use("/api/admin", validateAdmin, adminRouter);
-app.use("/sensorsData", sensorsDataRouter);
 
 const port = process.env.PORT || 10000;
 
