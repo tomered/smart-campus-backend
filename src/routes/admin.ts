@@ -71,7 +71,7 @@ router.put("/edit/:id", async (req: Request, res: Response) => {
 
   try {
     const user = await User.findOne({
-      where: { id: Number(id) },
+      where: { userId: String(id) },
       relations: ["role"],
     });
 
@@ -86,7 +86,7 @@ router.put("/edit/:id", async (req: Request, res: Response) => {
       const existingUser = await User.findOneBy({ email });
 
       //if another user with the same email exists, return a 400 error
-      if (existingUser && existingUser.id !== user.id) {
+      if (existingUser && existingUser.userId !== user.userId) {
         return res.status(400).json({ message: "Email is already in use" });
       }
 
@@ -109,7 +109,7 @@ router.put("/edit/:id", async (req: Request, res: Response) => {
     return res.status(200).json({
       message: "User updated successfully",
       user: {
-        id: user.id,
+        id: user.userId,
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
@@ -127,7 +127,7 @@ router.delete("/delete/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
-    const user = await User.findOneBy({ id: Number(id) });
+    const user = await User.findOneBy({ userId: String(id) });
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
